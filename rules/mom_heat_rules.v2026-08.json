@@ -1,0 +1,27 @@
+{
+  "version": "MOM_HEAT_RULES_2026-08",
+  "prototype_note": "Versioned hackathon ruleset. Verify against official MOM source before any real deployment.",
+  "hydration": {
+    "rule_id": "HYDRATION_HOURLY",
+    "description": "Provide regular hydration opportunities; MVP operational reminder uses 300 ml/hour.",
+    "ml_per_hour": 300
+  },
+  "heavy_outdoor_rest": [
+    {
+      "rule_id": "REST_15_MIN_REQUIRED",
+      "min_wbgt_c": 33.0,
+      "rest_minutes_per_hour": 15,
+      "description": "Heavy outdoor work at WBGT 33°C and above: encoded minimum recovery of 15 minutes per hour."
+    },
+    {
+      "rule_id": "REST_10_MIN_REQUIRED",
+      "min_wbgt_c": 32.0,
+      "rest_minutes_per_hour": 10,
+      "description": "Heavy outdoor work at WBGT 32°C to under 33°C: encoded minimum recovery of 10 minutes per hour."
+    }
+  ],
+  "acclimatisation": {
+    "rule_id": "ACCLIMATISATION_CHECK",
+    "description": "Acclimatisation status must be considered before high-exposure outdoor assignment."
+  }
+}

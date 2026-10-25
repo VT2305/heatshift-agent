@@ -1,0 +1,106 @@
+[
+  {
+    "task_id": "T101",
+    "name": "Roof membrane installation",
+    "zone": "roof",
+    "environment": "outdoor",
+    "intensity": "heavy",
+    "duration_minutes": 60,
+    "workers_required": 4,
+    "required_skills": [
+      "roofing"
+    ],
+    "earliest_start": "12:00",
+    "deadline": "17:00",
+    "fixed": false,
+    "dependencies": [],
+    "priority": 5
+  },
+  {
+    "task_id": "T205",
+    "name": "Shaded quality inspection",
+    "zone": "roof-shade",
+    "environment": "shaded",
+    "intensity": "light",
+    "duration_minutes": 60,
+    "workers_required": 1,
+    "required_skills": [
+      "inspection"
+    ],
+    "earliest_start": "12:00",
+    "deadline": "17:00",
+    "fixed": false,
+    "dependencies": [],
+    "priority": 3
+  },
+  {
+    "task_id": "T301",
+    "name": "Concrete finishing",
+    "zone": "yard",
+    "environment": "outdoor",
+    "intensity": "moderate",
+    "duration_minutes": 60,
+    "workers_required": 4,
+    "required_skills": [
+      "concrete"
+    ],
+    "earliest_start": "13:00",
+    "deadline": "17:00",
+    "fixed": false,
+    "dependencies": [],
+    "priority": 4
+  },
+  {
+    "task_id": "T401",
+    "name": "Indoor electrical installation",
+    "zone": "level-2",
+    "environment": "indoor",
+    "intensity": "moderate",
+    "duration_minutes": 60,
+    "workers_required": 2,
+    "required_skills": [
+      "electrical"
+    ],
+    "earliest_start": "13:00",
+    "deadline": "17:00",
+    "fixed": false,
+    "dependencies": [],
+    "priority": 4
+  },
+  {
+    "task_id": "T501",
+    "name": "Permit inspection",
+    "zone": "gate",
+    "environment": "shaded",
+    "intensity": "light",
+    "duration_minutes": 30,
+    "workers_required": 1,
+    "required_skills": [
+      "inspection"
+    ],
+    "earliest_start": "14:00",
+    "deadline": "16:00",
+    "fixed": true,
+    "dependencies": [],
+    "priority": 5
+  },
+  {
+    "task_id": "T601",
+    "name": "Final roof inspection",
+    "zone": "roof",
+    "environment": "outdoor",
+    "intensity": "light",
+    "duration_minutes": 30,
+    "workers_required": 1,
+    "required_skills": [
+      "inspection"
+    ],
+    "earliest_start": "15:00",
+    "deadline": "17:30",
+    "fixed": false,
+    "dependencies": [
+      "T101"
+    ],
+    "priority": 4
+  }
+]

@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HeatShift — Climate-Adaptive Operations</title>
+<style>
+:root{
+  --bg:#070b10;--panel:#0d141d;--panel2:#111a25;--line:#233145;--text:#f4f7fb;
+  --muted:#8ea0b5;--amber:#f3b64a;--amber2:#ffd17a;--green:#65dfa7;--red:#ff7272;
+  --blue:#7bb1ff;--shadow:0 24px 70px rgba(0,0,0,.35);--r:20px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:
+ radial-gradient(900px 500px at 75% -10%,rgba(65,111,170,.13),transparent 60%),
+ radial-gradient(700px 450px at 5% 20%,rgba(243,182,74,.06),transparent 65%),
+ var(--bg);color:var(--text);font:14px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+button,select{font:inherit}
+.shell{max-width:1580px;margin:auto;padding:22px}
+.topbar{position:sticky;top:12px;z-index:50;display:flex;justify-content:space-between;align-items:center;gap:18px;padding:14px 16px;border:1px solid rgba(66,82,106,.55);background:rgba(10,15,22,.88);backdrop-filter:blur(15px);border-radius:18px;box-shadow:var(--shadow)}
+.brand{display:flex;align-items:center;gap:12px}
+.mark{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(145deg,#182333,#0c121a);border:1px solid #31435a;color:var(--amber);font-weight:900;letter-spacing:.03em}
+.brand h1{font-size:17px;margin:0;letter-spacing:-.02em}.brand p{margin:2px 0 0;color:var(--muted);font-size:11px}
+.controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:7px 10px;color:#cbd7e5;font-size:11px;font-weight:700;background:#0d151e}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(101,223,167,.1)}
+.btn{border:1px solid var(--line);background:#121b27;color:var(--text);padding:10px 12px;border-radius:11px;cursor:pointer;font-weight:750;font-size:12px;transition:.18s}
+.btn:hover{transform:translateY(-1px);border-color:#48617e}.btn:disabled{opacity:.42;cursor:not-allowed;transform:none}
+.btn.primary{background:linear-gradient(180deg,#f6c05c,#dfa337);color:#181207;border-color:#f0b54a}
+.btn.ghost{background:transparent}.btn.red{color:#ffc0c0}
+.mode-select{border:1px solid var(--line);background:#101923;color:#dce7f2;padding:9px 10px;border-radius:11px;font-weight:700;font-size:12px}
+.hero{display:grid;grid-template-columns:1.22fr .78fr;gap:18px;margin-top:18px}
+.hero-main{position:relative;overflow:hidden;min-height:300px;border:1px solid var(--line);border-radius:24px;background:linear-gradient(145deg,#111a24,#0a1119);box-shadow:var(--shadow);padding:28px}
+.hero-main:after{content:"";position:absolute;right:-80px;top:-110px;width:380px;height:380px;background:radial-gradient(circle,rgba(243,182,74,.13),transparent 65%);pointer-events:none}
+.kicker{text-transform:uppercase;letter-spacing:.17em;color:#74879d;font-weight:900;font-size:10px}
+.hero-title{font-size:38px;line-height:1.06;letter-spacing:-.045em;max-width:820px;margin:16px 0 12px}.hero-title em{font-style:normal;color:var(--amber2)}
+.hero-copy{max-width:780px;color:#aebccc;font-size:14px;line-height:1.65}
+.hero-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:26px}
+.metric{border:1px solid var(--line);background:rgba(8,13,19,.56);border-radius:14px;padding:14px}
+.metric .k{font-size:9px;text-transform:uppercase;letter-spacing:.14em;color:#71849a;font-weight:900}
+.metric .v{font-size:22px;font-weight:900;margin-top:7px;letter-spacing:-.03em}.metric .s{color:var(--muted);font-size:10px;margin-top:2px}
+.hero-side{display:grid;gap:14px}
+.card{border:1px solid var(--line);background:linear-gradient(180deg,var(--panel2),var(--panel));border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.pad{padding:19px}
+.head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--line)}
+.head h2{font-size:13px;margin:0}.head span{color:var(--muted);font-size:10px}
+.wbgt{font-size:55px;font-weight:950;line-height:1;letter-spacing:-.05em;margin:10px 0}.wbgt small{font-size:19px;color:#d4deea}
+.status{display:inline-flex;align-items:center;gap:7px;padding:7px 9px;border-radius:999px;font-weight:850;font-size:10px;letter-spacing:.04em;border:1px solid rgba(101,223,167,.25);background:rgba(101,223,167,.07);color:#baf4d9}
+.status.warn{border-color:rgba(243,182,74,.28);background:rgba(243,182,74,.08);color:#ffd98f}.status.bad{border-color:rgba(255,114,114,.28);background:rgba(255,114,114,.08);color:#ffc1c1}
+.grid{display:grid;gap:18px;margin-top:18px}.two{grid-template-columns:1.25fr .75fr}.half{grid-template-columns:1fr 1fr}
+.tabs{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+.tab{border:1px solid var(--line);color:#91a2b8;background:#0c1219;border-radius:999px;padding:8px 12px;font-size:11px;font-weight:800;cursor:pointer}.tab.active{color:#111;background:var(--amber);border-color:var(--amber)}
+.scenario-bar{display:flex;gap:8px;flex-wrap:wrap;padding:15px 18px;border-bottom:1px solid var(--line)}
+.scenario{border:1px solid var(--line);background:#0d151f;color:#d7e2ef;padding:9px 11px;border-radius:11px;cursor:pointer;font-weight:800;font-size:11px}.scenario:hover{border-color:#4c627e}.scenario.danger{color:#ffc3c3}
+.schedule{padding:8px 18px 18px}
+.taskrow{display:grid;grid-template-columns:180px 1fr 72px;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid rgba(35,49,69,.65)}.taskrow:last-child{border:none}
+.taskname{font-weight:800;font-size:12px}.taskmeta{font-size:10px;color:var(--muted);margin-top:3px}
+.track{height:13px;border-radius:999px;background:#070c12;border:1px solid #233145;position:relative;overflow:hidden}.bar{height:100%;background:linear-gradient(90deg,#4d6380,#6b809c);border-radius:999px}.bar.hot{background:linear-gradient(90deg,#d89727,#f3b64a)}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#d6dfeb;font-size:10px}
+.compare{display:grid;grid-template-columns:1fr 45px 1fr;gap:12px;align-items:start}.arrow{display:grid;place-items:center;color:var(--amber);font-size:24px;padding-top:34px}
+.comparebox{border:1px solid var(--line);border-radius:14px;background:#091019;padding:13px}.comparebox h3{font-size:10px;text-transform:uppercase;letter-spacing:.13em;color:#7e91a8;margin:0 0 10px}
+.change{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid rgba(35,49,69,.55);font-size:11px}.change:last-child{border:0}.change strong{font-family:ui-monospace,SFMono-Regular,monospace}
+.recommend{border-color:rgba(243,182,74,.28);background:
+ radial-gradient(circle at top right,rgba(243,182,74,.12),transparent 32%),
+ linear-gradient(180deg,#151b21,#0d141c)}
+.rectitle{font-size:22px;font-weight:950;letter-spacing:-.03em;margin:8px 0}.reccopy{color:#bdc9d6;font-size:12px;line-height:1.65}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}.mini{border:1px solid var(--line);background:#091019;border-radius:12px;padding:11px}.mini .k{font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:#75889e;font-weight:900}.mini .v{font-size:17px;font-weight:900;margin-top:5px}
+.actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.timeline{padding:15px 18px}.event{display:grid;grid-template-columns:16px 1fr;gap:10px;padding-bottom:16px;position:relative}.event:not(:last-child):before{content:"";position:absolute;left:7px;top:15px;bottom:0;width:1px;background:#26364a}.node{width:15px;height:15px;border:2px solid #52667f;border-radius:50%;background:#0e151e;z-index:1}.event.ok .node{border-color:var(--green);background:rgba(101,223,167,.11)}.event.warn .node{border-color:var(--amber);background:rgba(243,182,74,.11)}.event h4{margin:0;font-size:11px}.event p{margin:3px 0 0;font-size:9px;color:#7f91a7;word-break:break-word}
+.cert{padding:17px}.certgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.kv{border:1px solid var(--line);background:#091019;border-radius:12px;padding:11px}.kv span{display:block;font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:#71849a;font-weight:900}.kv strong{display:block;font-size:11px;margin-top:5px}
+.arch{padding:22px}.flow{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;align-items:center}.flowbox{border:1px solid var(--line);border-radius:13px;background:#091019;padding:13px;text-align:center;font-size:10px;font-weight:850;min-height:70px;display:grid;place-items:center}.flowbox.ai{border-color:rgba(123,177,255,.36);background:rgba(123,177,255,.07)}.flowbox.safe{border-color:rgba(101,223,167,.3);background:rgba(101,223,167,.06)}.connector{text-align:center;color:#536a86;font-size:17px}
+.guardrails{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.guard{border:1px solid var(--line);background:#091019;border-radius:13px;padding:13px}.guard b{display:block;font-size:11px;margin-bottom:5px}.guard span{color:var(--muted);font-size:10px}
+.hidden{display:none!important}.loading{opacity:.52;pointer-events:none}.flash{animation:flash 1s ease}@keyframes flash{35%{box-shadow:0 0 0 6px rgba(243,182,74,.12),var(--shadow)}}
+.toast{position:fixed;right:22px;bottom:22px;z-index:80;border:1px solid #344761;background:#111a25;color:#e9f0f8;border-radius:13px;padding:12px 14px;box-shadow:var(--shadow);font-size:11px;max-width:390px;display:none}
+.footer{padding:30px 0 10px;color:#65788f;font-size:9px;text-align:center}
+@media(max-width:1050px){.hero,.two,.half{grid-template-columns:1fr}.hero-strip,.metrics{grid-template-columns:1fr 1fr}.flow{grid-template-columns:1fr}.connector{transform:rotate(90deg)}}
+@media(max-width:650px){.shell{padding:10px}.topbar{position:static;align-items:flex-start;flex-direction:column}.hero-title{font-size:29px}.hero-strip,.metrics,.certgrid,.guardrails{grid-template-columns:1fr}.taskrow{grid-template-columns:1fr}.compare{grid-template-columns:1fr}.arrow{transform:rotate(90deg);padding:0}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="topbar">
+    <div class="brand"><div class="mark">HS</div><div><h1>HeatShift</h1><p>Climate-Adaptive Site Operations · Singapore</p></div></div>
+    <div class="controls">
+      <span class="badge"><span class="dot"></span><span id="systemState">System ready</span></span>
+      <select class="mode-select" id="mode"><option value="local">Resilient local agent</option><option value="bedrock">Amazon Bedrock agent</option></select>
+      <button class="btn ghost" id="liveBtn">Fetch Live WBGT</button>
+      <button class="btn" id="resetBtn">Reset Demo</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-main">
+      <div class="kicker">Decision support for heat-adaptive construction</div>
+      <h1 class="hero-title">Singapore already knows when heat is rising.<br><em>HeatShift decides what happens next.</em></h1>
+      <div class="hero-copy">HeatShift turns WBGT, workforce state, task dependencies and deterministic safety constraints into a validated, lowest-disruption work-plan proposal — then stops at a human approval boundary.</div>
+      <div class="hero-strip">
+        <div class="metric"><div class="k">Current WBGT</div><div class="v"><span id="wbgt">31.6</span>°C</div><div class="s" id="provenance">SIMULATED baseline</div></div>
+        <div class="metric"><div class="k">Active workforce</div><div class="v" id="workerCount">12</div><div class="s" id="workerSub">12 available</div></div>
+        <div class="metric"><div class="k">Active plan</div><div class="v" id="planMetric">v1</div><div class="s">Versioned + auditable</div></div>
+        <div class="metric"><div class="k">Control boundary</div><div class="v" style="font-size:17px">Human approval</div><div class="s">AI cannot self-approve</div></div>
+      </div>
+    </div>
+    <div class="hero-side">
+      <div class="card pad">
+        <div class="kicker">Operational status</div>
+        <div class="wbgt"><span id="bigWbgt">31.6</span><small>°C WBGT</small></div>
+        <div><span class="status" id="statusPill">● MONITORING</span></div>
+        <p class="reccopy" id="statusText">Current plan loaded. Run a scenario to show the agent perceive, assess, plan, verify and request approval.</p>
+      </div>
+      <div class="card">
+        <div class="head"><h2>Demo Controls</h2><span>Judge-ready scenarios</span></div>
+        <div class="scenario-bar">
+          <button class="scenario" data-scenario="heat_spike">01 · Heat spike</button>
+          <button class="scenario" data-scenario="worker_unavailable">02 · Worker unavailable</button>
+          <button class="scenario danger" data-scenario="no_feasible">03 · No feasible plan</button>
+          <button class="scenario" data-scenario="monitor">04 · Normal monitoring</button>
+        </div>
+        <div class="pad"><div class="kicker">Demo story</div><p class="reccopy">Start with Heat Spike → approve → Worker Unavailable. Use No Feasible Plan only if a judge asks what happens when safety and deadlines cannot both be satisfied.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="operations">Operations</button>
+    <button class="tab" data-tab="evidence">Evidence & Guardrails</button>
+    <button class="tab" data-tab="architecture">Architecture</button>
+  </div>
+
+  <main id="operationsPanel">
+    <div class="grid two">
+      <section class="card">
+        <div class="head"><h2>Today's Operations</h2><span id="planVersion">Plan v1</span></div>
+        <div class="schedule" id="schedule"></div>
+      </section>
+      <section class="card">
+        <div class="head"><h2>Agent Activity</h2><span id="decisionId">No active decision</span></div>
+        <div class="timeline" id="timeline">
+          <div class="event"><div class="node"></div><div><h4>Waiting for event</h4><p>Choose a demo scenario above.</p></div></div>
+        </div>
+      </section>
+    </div>
+
+    <div class="grid two">
+      <section class="card recommend" id="recommendCard">
+        <div class="pad">
+          <div class="kicker">HeatShift recommendation</div>
+          <div class="rectitle" id="recTitle">Monitoring current plan</div>
+          <div class="reccopy" id="recCopy">No schedule change is currently recommended.</div>
+          <div class="metrics">
+            <div class="mini"><div class="k">Validation</div><div class="v" id="mValid">—</div></div>
+            <div class="mini"><div class="k">Tasks moved</div><div class="v" id="mMoved">0</div></div>
+            <div class="mini"><div class="k">Delay</div><div class="v" id="mDelay">0 min</div></div>
+            <div class="mini"><div class="k">Exposure proxy</div><div class="v" id="mExposure">—</div></div>
+          </div>
+          <div class="actions">
+            <button class="btn primary" id="approveBtn" disabled>Approve validated plan</button>
+            <button class="btn red" id="rejectBtn" disabled>Reject</button>
+            <button class="btn ghost" id="auditBtn">View audit</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="head"><h2>Before → After</h2><span>Schedule impact</span></div>
+        <div class="pad" id="compare"><div class="reccopy">A validated proposal will appear here after replanning.</div></div>
+      </section>
+    </div>
+
+    <div class="grid half">
+      <section class="card">
+        <div class="head"><h2>Decision Certificate</h2><span>Auditable evidence, not chain-of-thought</span></div>
+        <div class="cert" id="certificate"><div class="reccopy">No certificate yet.</div></div>
+      </section>
+      <section class="card">
+        <div class="head"><h2>Why this plan</h2><span>Machine evidence → plain English</span></div>
+        <div class="pad">
+          <div class="guardrails">
+            <div class="guard"><b>Rules are deterministic</b><span>The model does not invent regulatory thresholds.</span></div>
+            <div class="guard"><b>Schedules are validated</b><span>Skills, conflicts, dependencies and work windows are checked before proposal.</span></div>
+            <div class="guard"><b>Human remains final authority</b><span>Proposal publication and approval are separate actions.</span></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <main id="evidencePanel" class="hidden">
+    <div class="grid half">
+      <section class="card">
+        <div class="head"><h2>Safety & Governance Guardrails</h2><span>Critic-proof boundaries</span></div>
+        <div class="pad">
+          <div class="guardrails">
+            <div class="guard"><b>01 · No invented safety rules</b><span>Rules come from a versioned deterministic ruleset.</span></div>
+            <div class="guard"><b>02 · Validator is mandatory</b><span>An invalid schedule cannot become a proposal.</span></div>
+            <div class="guard"><b>03 · Human approval</b><span>The agent is never given an approve-plan tool.</span></div>
+            <div class="guard"><b>04 · Data provenance</b><span>LIVE, CACHED and SIMULATED are explicitly labelled.</span></div>
+            <div class="guard"><b>05 · No medical diagnosis</b><span>Exposure is an operational proxy, not illness probability.</span></div>
+            <div class="guard"><b>06 · Bounded execution</b><span>Tool loops and replanning attempts are capped.</span></div>
+          </div>
+        </div>
+      </section>
+      <section class="card">
+        <div class="head"><h2>Competition Evidence</h2><span>What we demonstrate</span></div>
+        <div class="cert">
+          <div class="certgrid">
+            <div class="kv"><span>Problem</span><strong>Heat information → executable work plan</strong></div>
+            <div class="kv"><span>Agentic behavior</span><strong>Perceive · plan · verify · adapt</strong></div>
+            <div class="kv"><span>Optimization</span><strong>OR-Tools CP-SAT</strong></div>
+            <div class="kv"><span>Human-in-loop</span><strong>Mandatory</strong></div>
+            <div class="kv"><span>Observability</span><strong>Tool timeline + audit</strong></div>
+            <div class="kv"><span>Failure behavior</span><strong>Refuse unsafe infeasible plans</strong></div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="grid half">
+      <section class="card"><div class="head"><h2>Evaluation Targets</h2><span>Measure — never invent</span></div><div class="pad">
+        <div class="guardrails">
+          <div class="guard"><b>Unsafe plans published</b><span>Target: 0</span></div>
+          <div class="guard"><b>Autonomous approvals</b><span>Target: 0</span></div>
+          <div class="guard"><b>Invented rule values</b><span>Target: 0</span></div>
+          <div class="guard"><b>Unbounded loops</b><span>Target: 0</span></div>
+          <div class="guard"><b>Schema pass rate</b><span>Collect from test suite</span></div>
+          <div class="guard"><b>Scenario completion</b><span>Collect from evaluation runner</span></div>
+        </div>
+      </div></section>
+      <section class="card"><div class="head"><h2>Data Provenance</h2><span>NEA + resilient fallback</span></div><div class="pad">
+        <p class="reccopy">Live WBGT uses Singapore's data.gov.sg real-time weather sub-API. If live retrieval fails, HeatShift can use the last cached observation; if no cache exists, the competition scenario remains explicitly marked SIMULATED.</p>
+        <div class="kv"><span>Live endpoint</span><strong>data.gov.sg · weather?api=wbgt</strong></div>
+      </div></section>
+    </div>
+  </main>
+
+  <main id="architecturePanel" class="hidden">
+    <section class="card" style="margin-top:18px">
+      <div class="head"><h2>Final HeatShift Architecture</h2><span>Clear authorities + failure boundaries</span></div>
+      <div class="arch">
+        <div class="flow">
+          <div class="flowbox">Dashboard<br>WBGT · Plan · Approval</div><div class="connector">→</div>
+          <div class="flowbox ai">Bedrock + Strands<br>AI Supervisor</div><div class="connector">→</div>
+          <div class="flowbox safe">Deterministic Tools<br>Rules · State · Weather</div><div class="connector">→</div>
+          <div class="flowbox">OR-Tools<br>Scheduler</div>
+        </div>
+        <div style="height:10px"></div>
+        <div class="flow">
+          <div class="flowbox">Audit + Plan Versions</div><div class="connector">←</div>
+          <div class="flowbox safe">Human Approval<br>Boundary</div><div class="connector">←</div>
+          <div class="flowbox">Decision Certificate<br>Impact + Provenance</div><div class="connector">←</div>
+          <div class="flowbox safe">Validator<br>Mandatory Gate</div>
+        </div>
+        <div style="margin-top:20px" class="guardrails">
+          <div class="guard"><b>Regulatory truth</b><span>Versioned deterministic rules. AI authority: none.</span></div>
+          <div class="guard"><b>Operational truth</b><span>Workers, tasks, WBGT and plan state. AI reads/orchestrates.</span></div>
+          <div class="guard"><b>Decision language</b><span>Tool selection, explanation and adaptation. AI authority: yes.</span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="footer">HeatShift prototype · Decision support, not a medical device · Human supervisor remains accountable for final operational approval.</div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const $$=s=>[...document.querySelectorAll(s)];
+const app={state:null,decision:null,pending:null,originalPlan:null,agentStatus:null};
+
+async function api(path, opts={}){
+  const r=await fetch(path,{headers:{'Content-Type':'application/json',...(opts.headers||{})},...opts});
+  if(!r.ok){let t=await r.text();throw new Error(t||`HTTP ${r.status}`)}
+  return r.json();
+}
+function toast(msg){const el=$('#toast');el.textContent=msg;el.style.display='block';clearTimeout(window._toast);window._toast=setTimeout(()=>el.style.display='none',3200)}
+function mins(hm){let [h,m]=hm.split(':').map(Number);return h*60+m}
+function left(hm){return Math.max(0,((mins(hm)-12*60)/(5.5*60))*100)}
+function width(a,b){return Math.max(3,((mins(b)-mins(a))/(5.5*60))*100)}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+
+async function load(){
+  app.state=await api('/api/state');
+  app.originalPlan=JSON.parse(JSON.stringify(app.state.current_plan));
+  try{app.agentStatus=await api('/api/agent/status')}catch(e){}
+  renderState();
+}
+function renderState(){
+  const s=app.state;
+  $('#workerCount').textContent=s.workers.length;
+  $('#workerSub').textContent=`${s.workers.filter(w=>w.status==='available').length} available`;
+  $('#planMetric').textContent=`v${s.current_plan.version}`;
+  $('#planVersion').textContent=`Plan v${s.current_plan.version}`;
+  renderSchedule(s.current_plan);
+  if(app.agentStatus?.bedrock_agent==='credentials_detected') $('#systemState').textContent='Bedrock credentials detected';
+}
+function renderSchedule(plan){
+  const tmap=Object.fromEntries(app.state.tasks.map(t=>[t.task_id,t]));
+  $('#schedule').innerHTML=plan.items.map(i=>{
+    const t=tmap[i.task_id], hot=t.environment==='outdoor'&&t.intensity==='heavy';
+    return `<div class="taskrow"><div><div class="taskname">${t.name}</div><div class="taskmeta">${t.zone} · ${t.environment} · ${t.intensity} · ${i.worker_ids.length} worker(s)</div></div><div class="track"><div class="bar ${hot?'hot':''}" style="margin-left:${left(i.start)}%;width:${width(i.start,i.end)}%"></div></div><div class="mono">${i.start}–${i.end}</div></div>`
+  }).join('');
+}
+function renderTimeline(xs=[]){
+  if(!xs.length){$('#timeline').innerHTML='<div class="event"><div class="node"></div><div><h4>Waiting for event</h4><p>Choose a demo scenario.</p></div></div>';return}
+  const labels={get_site_state:'Site state loaded',get_heat_state:'Heat state loaded',get_safety_constraints:'Safety constraints evaluated',assess_current_plan:'Current plan assessed',calculate_exposure:'Exposure proxy calculated',generate_safe_schedule:'Replacement schedule generated',validate_schedule:'Candidate validated',compare_plan_impact:'Operational impact calculated',propose_plan_change:'Supervisor approval requested'};
+  $('#timeline').innerHTML=xs.map(x=>{
+    const c=x.result==='CONFLICT'?'warn':(x.result==='PASS'||x.result==='OK'||x.result==='PENDING_APPROVAL'?'ok':'');
+    return `<div class="event ${c}"><div class="node"></div><div><h4>${labels[x.tool]||x.tool}</h4><p>${x.result} · ${esc(JSON.stringify(x.details||{}))}</p></div></div>`
+  }).join('');
+}
+function renderCompare(d){
+  if(!d.proposed_plan){$('#compare').innerHTML='<div class="reccopy">No replacement plan was proposed.</div>';return}
+  const old=Object.fromEntries(app.state.current_plan.items.map(i=>[i.task_id,i]));
+  const tmap=Object.fromEntries(app.state.tasks.map(t=>[t.task_id,t]));
+  const changed=d.proposed_plan.items.filter(i=>!old[i.task_id]||old[i.task_id].start!==i.start||JSON.stringify(old[i.task_id].worker_ids)!==JSON.stringify(i.worker_ids));
+  $('#compare').innerHTML=`<div class="compare"><div class="comparebox"><h3>Current plan</h3>${changed.map(i=>`<div class="change"><span>${tmap[i.task_id].name}</span><strong>${old[i.task_id]?.start||'—'}</strong></div>`).join('')}</div><div class="arrow">→</div><div class="comparebox"><h3>Proposed plan</h3>${changed.map(i=>`<div class="change"><span>${tmap[i.task_id].name}</span><strong>${i.start}</strong></div>`).join('')}</div></div>`;
+}
+function renderDecision(d, scenario){
+  app.decision=d;app.pending=d.proposed_plan||null;
+  $('#decisionId').textContent=d.decision_id;
+  $('#recCopy').textContent=d.supervisor_message;
+  const wbgt=scenario==='monitor'?'31.6':'32.4';$('#wbgt').textContent=wbgt;$('#bigWbgt').textContent=wbgt;$('#provenance').textContent=`${d.data_quality||'SIMULATED'} · demo scenario`;
+
+  const imp=d.impact||{};
+  $('#mValid').textContent=d.certificate?.validation?.valid?'PASS':'—';
+  $('#mMoved').textContent=imp.tasks_moved??0;
+  $('#mDelay').textContent=`${imp.delay_minutes??0} min`;
+  $('#mExposure').textContent=imp.exposure_proxy_reduction_pct!=null?`↓ ${imp.exposure_proxy_reduction_pct}%`:'—';
+
+  if(d.status==='CHANGE_RECOMMENDED'){
+    $('#recTitle').textContent='Validated operational change ready';
+    $('#statusPill').className='status warn';$('#statusPill').textContent='● APPROVAL REQUIRED';
+    $('#statusText').textContent='HeatShift found a conflict, generated a replacement, validated it, and stopped before publication.';
+    $('#approveBtn').disabled=false;$('#rejectBtn').disabled=false;
+    $('#recommendCard').classList.add('flash');setTimeout(()=>$('#recommendCard').classList.remove('flash'),1100);
+  }else if(d.status==='MONITOR'){
+    $('#recTitle').textContent='Current plan remains compliant';
+    $('#statusPill').className='status';$('#statusPill').textContent='● MONITORING';
+    $('#statusText').textContent='No operational change is required under the current inputs.';
+    $('#approveBtn').disabled=true;$('#rejectBtn').disabled=true;
+  }else if(d.status==='NO_FEASIBLE_PLAN'){
+    $('#recTitle').textContent='No safe feasible plan';
+    $('#statusPill').className='status bad';$('#statusPill').textContent='● ESCALATION REQUIRED';
+    $('#statusText').textContent='HeatShift refused to weaken hard constraints. Supervisor action is required.';
+    $('#approveBtn').disabled=true;$('#rejectBtn').disabled=true;
+  }else{
+    $('#recTitle').textContent=d.status.replaceAll('_',' ');
+    $('#statusPill').className='status bad';$('#statusPill').textContent='● BLOCKED';
+    $('#approveBtn').disabled=true;$('#rejectBtn').disabled=true;
+  }
+  renderCompare(d);
+  renderTimeline(d.certificate?.tool_timeline||[]);
+  if(d.certificate){
+    const c=d.certificate;
+    $('#certificate').innerHTML=`<div class="certgrid"><div class="kv"><span>Decision</span><strong>${c.decision_id}</strong></div><div class="kv"><span>Trigger</span><strong>${c.trigger}</strong></div><div class="kv"><span>Validation</span><strong>${c.validation.valid?'PASS':'FAIL'} · ${c.validation.checks} checks</strong></div><div class="kv"><span>Approval</span><strong>${c.human_approval}</strong></div><div class="kv"><span>Data provenance</span><strong>${c.data_provenance}</strong></div><div class="kv"><span>Ruleset</span><strong>${c.ruleset_version}</strong></div></div>`
+  }else $('#certificate').innerHTML='<div class="reccopy">No certificate was issued because no plan reached the proposal gate.</div>';
+}
+async function runScenario(scenario){
+  const mode=$('#mode').value;
+  $$('.scenario').forEach(b=>b.disabled=true);$('#recommendCard').classList.add('loading');
+  try{
+    const d=await api('/api/demo/run',{method:'POST',body:JSON.stringify({scenario,mode})});
+    renderDecision(d,scenario);
+    if(scenario==='worker_unavailable'){
+      app.state=await api('/api/state');renderState();
+    }
+  }catch(e){
+    toast(`Scenario failed: ${e.message}`);
+    if(mode==='bedrock') toast('Bedrock may need AWS credentials/model access. Switch to resilient local agent for the guaranteed demo.');
+  }finally{$$('.scenario').forEach(b=>b.disabled=false);$('#recommendCard').classList.remove('loading')}
+}
+async function approve(){
+  if(!app.pending)return;
+  const p=await api('/api/proposals/approve',{method:'POST',body:JSON.stringify({plan_id:app.pending.plan_id,supervisor:'site-supervisor-demo'})});
+  app.state.current_plan=p;renderState();
+  $('#statusPill').className='status';$('#statusPill').textContent='● PLAN APPROVED';
+  $('#statusText').textContent='The validated proposal is now the active plan. HeatShift continues monitoring.';
+  $('#recTitle').textContent='Supervisor approved the plan';$('#approveBtn').disabled=true;$('#rejectBtn').disabled=true;
+  toast('Approved plan published as the new active version.');
+}
+async function reject(){
+  if(!app.pending)return;
+  await api('/api/proposals/reject',{method:'POST',body:JSON.stringify({plan_id:app.pending.plan_id,supervisor:'site-supervisor-demo',reason:'Rejected in competition dashboard'})});
+  $('#statusPill').className='status warn';$('#statusPill').textContent='● PROPOSAL REJECTED';$('#recTitle').textContent='Supervisor rejected the recommendation';$('#approveBtn').disabled=true;$('#rejectBtn').disabled=true;toast('Proposal rejected. Active plan unchanged.');
+}
+async function reset(){
+  await api('/api/demo/reset',{method:'POST'});app.decision=null;app.pending=null;await load();
+  $('#wbgt').textContent='31.6';$('#bigWbgt').textContent='31.6';$('#provenance').textContent='SIMULATED baseline';$('#statusPill').className='status';$('#statusPill').textContent='● MONITORING';$('#statusText').textContent='Current plan loaded. Run a scenario to show the agent perceive, assess, plan, verify and request approval.';$('#recTitle').textContent='Monitoring current plan';$('#recCopy').textContent='No schedule change is currently recommended.';$('#mValid').textContent='—';$('#mMoved').textContent='0';$('#mDelay').textContent='0 min';$('#mExposure').textContent='—';$('#compare').innerHTML='<div class="reccopy">A validated proposal will appear here after replanning.</div>';$('#certificate').innerHTML='<div class="reccopy">No certificate yet.</div>';renderTimeline([]);toast('Demo reset to the clean baseline.');
+}
+async function live(){
+  try{const h=await api('/api/heat/live');$('#wbgt').textContent=h.wbgt_c;$('#bigWbgt').textContent=h.wbgt_c;$('#provenance').textContent=`${h.source} · ${h.station_id}`;toast(`${h.source}: WBGT ${h.wbgt_c}°C`)}catch(e){toast('Live WBGT unavailable. The judged scenario remains explicitly simulated and reliable.')}
+}
+$$('.scenario').forEach(b=>b.onclick=()=>runScenario(b.dataset.scenario));
+$('#approveBtn').onclick=approve;$('#rejectBtn').onclick=reject;$('#resetBtn').onclick=reset;$('#liveBtn').onclick=live;
+$('#auditBtn').onclick=async()=>{const a=await api('/api/audit?limit=8');toast(`${a.length} recent audit events available through /api/audit`)};
+$$('.tab').forEach(t=>t.onclick=()=>{$$('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');['operations','evidence','architecture'].forEach(n=>$('#'+n+'Panel').classList.toggle('hidden',n!==t.dataset.tab))});
+load().catch(e=>toast('Could not load HeatShift: '+e.message));
+</script>
+</body>
+</html>

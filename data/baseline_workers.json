@@ -1,0 +1,198 @@
+[
+  {
+    "worker_id": "W001",
+    "name": "Worker 01",
+    "team": "Roofing-A",
+    "skills": [
+      "roofing",
+      "inspection"
+    ],
+    "acclimatisation_status": "acclimatised",
+    "fit_for_outdoor_work": true,
+    "current_zone": "yard",
+    "shift_start": "08:00",
+    "shift_end": "17:00",
+    "outdoor_minutes_since_recovery": 20,
+    "last_recovery_end": "10:20",
+    "status": "available"
+  },
+  {
+    "worker_id": "W002",
+    "name": "Worker 02",
+    "team": "Roofing-A",
+    "skills": [
+      "roofing"
+    ],
+    "acclimatisation_status": "acclimatised",
+    "fit_for_outdoor_work": true,
+    "current_zone": "yard",
+    "shift_start": "08:00",
+    "shift_end": "17:00",
+    "outdoor_minutes_since_recovery": 20,
+    "last_recovery_end": "10:20",
+    "status": "available"
+  },
+  {
+    "worker_id": "W003",
+    "name": "Worker 03",
+    "team": "Roofing-A",
+    "skills": [
+      "roofing"
+    ],
+    "acclimatisation_status": "acclimatised",
+    "fit_for_outdoor_work": true,
+    "current_zone": "yard",
+    "shift_start": "08:00",
+    "shift_end": "17:00",
+    "outdoor_minutes_since_recovery": 20,
+    "last_recovery_end": "10:20",
+    "status": "available"
+  },
+  {
+    "worker_id": "W004",
+    "name": "Worker 04",
+    "team": "Roofing-A",
+    "skills": [
+      "roofing"
+    ],
+    "acclimatisation_status": "acclimatised",
+    "fit_for_outdoor_work": true,
+    "current_zone": "yard",
+    "shift_start": "08:00",
+    "shift_end": "17:00",
+    "outdoor_minutes_since_recovery": 20,
+    "last_recovery_end": "10:20",
+    "status": "available"
+  },
+  {
+    "worker_id": "W005",
+    "name": "Worker 05",
+    "team": "Civil-B",
+    "skills": [
+      "concrete",
+      "inspection"
+    ],
+    "acclimatisation_status": "acclimatised",
+    "fit_for_outdoor_work": true,
+    "current_zone": "yard",
+    "shift_start": "08:00",
+    "shift_end": "17:00",
+    "outdoor_minutes_since_recovery": 20,
+    "last_recovery_end": "10:20",
+    "status": "available"
+  },
+  {
+    "worker_id": "W006",
+    "name": "Worker 06",
+    "team": "Civil-B",
+    "skills": [
+      "concrete"
+    ],
+    "acclimatisation_status": "acclimatised",
+    "fit_for_outdoor_work": true,
+    "current_zone": "yard",
+    "shift_start": "08:00",
+    "shift_end": "17:00",
+    "outdoor_minutes_since_recovery": 20,
+    "last_recovery_end": "10:20",
+    "status": "available"
+  },
+  {
+    "worker_id": "W007",
+    "name": "Worker 07",
+    "team": "Civil-B",
+    "skills": [
+      "concrete"
+    ],
+    "acclimatisation_status": "acclimatised",
+    "fit_for_outdoor_work": true,
+    "current_zone": "yard",
+    "shift_start": "08:00",
+    "shift_end": "17:00",
+    "outdoor_minutes_since_recovery": 20,
+    "last_recovery_end": "10:20",
+    "status": "available"
+  },
+  {
+    "worker_id": "W008",
+    "name": "Worker 08",
+    "team": "Civil-B",
+    "skills": [
+      "concrete"
+    ],
+    "acclimatisation_status": "acclimatised",
+    "fit_for_outdoor_work": true,
+    "current_zone": "yard",
+    "shift_start": "08:00",
+    "shift_end": "17:00",
+    "outdoor_minutes_since_recovery": 20,
+    "last_recovery_end": "10:20",
+    "status": "available"
+  },
+  {
+    "worker_id": "W009",
+    "name": "Worker 09",
+    "team": "MEP-C",
+    "skills": [
+      "electrical",
+      "inspection"
+    ],
+    "acclimatisation_status": "acclimatised",
+    "fit_for_outdoor_work": true,
+    "current_zone": "yard",
+    "shift_start": "08:00",
+    "shift_end": "17:00",
+    "outdoor_minutes_since_recovery": 20,
+    "last_recovery_end": "10:20",
+    "status": "available"
+  },
+  {
+    "worker_id": "W010",
+    "name": "Worker 10",
+    "team": "MEP-C",
+    "skills": [
+      "electrical"
+    ],
+    "acclimatisation_status": "acclimatised",
+    "fit_for_outdoor_work": true,
+    "current_zone": "yard",
+    "shift_start": "08:00",
+    "shift_end": "17:00",
+    "outdoor_minutes_since_recovery": 20,
+    "last_recovery_end": "10:20",
+    "status": "available"
+  },
+  {
+    "worker_id": "W011",
+    "name": "Worker 11",
+    "team": "Inspect-D",
+    "skills": [
+      "inspection",
+      "roofing"
+    ],
+    "acclimatisation_status": "acclimatised",
+    "fit_for_outdoor_work": true,
+    "current_zone": "yard",
+    "shift_start": "08:00",
+    "shift_end": "17:00",
+    "outdoor_minutes_since_recovery": 20,
+    "last_recovery_end": "10:20",
+    "status": "available"
+  },
+  {
+    "worker_id": "W012",
+    "name": "Worker 12",
+    "team": "Inspect-D",
+    "skills": [
+      "inspection"
+    ],
+    "acclimatisation_status": "acclimatising",
+    "fit_for_outdoor_work": true,
+    "current_zone": "yard",
+    "shift_start": "08:00",
+    "shift_end": "17:00",
+    "outdoor_minutes_since_recovery": 20,
+    "last_recovery_end": "10:20",
+    "status": "available"
+  }
+]

@@ -1,0 +1,76 @@
+{
+  "plan_id": "PLAN-BASE",
+  "version": 1,
+  "generated_at": "2026-09-03T11:45:00+08:00",
+  "trigger": "MORNING_PLAN",
+  "status": "current",
+  "items": [
+    {
+      "task_id": "T101",
+      "start": "13:00",
+      "end": "14:00",
+      "worker_ids": [
+        "W001",
+        "W002",
+        "W003",
+        "W004"
+      ]
+    },
+    {
+      "task_id": "T205",
+      "start": "16:00",
+      "end": "17:00",
+      "worker_ids": [
+        "W011"
+      ]
+    },
+    {
+      "task_id": "T301",
+      "start": "13:00",
+      "end": "14:00",
+      "worker_ids": [
+        "W005",
+        "W006",
+        "W007",
+        "W008"
+      ]
+    },
+    {
+      "task_id": "T401",
+      "start": "13:00",
+      "end": "14:00",
+      "worker_ids": [
+        "W009",
+        "W010"
+      ]
+    },
+    {
+      "task_id": "T501",
+      "start": "14:00",
+      "end": "14:30",
+      "worker_ids": [
+        "W011"
+      ]
+    },
+    {
+      "task_id": "T601",
+      "start": "15:30",
+      "end": "16:00",
+      "worker_ids": [
+        "W001"
+      ]
+    }
+  ],
+  "required_breaks": [],
+  "metrics": {
+    "delay_minutes": 0,
+    "tasks_moved": 0,
+    "worker_reassignments": 0,
+    "overtime_minutes": 0,
+    "exposure_proxy_before": 0,
+    "exposure_proxy_after": 0,
+    "exposure_proxy_reduction_pct": 0,
+    "compliance": true
+  },
+  "explanation": "Original morning work plan."
+}

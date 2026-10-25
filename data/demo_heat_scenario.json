@@ -1,0 +1,47 @@
+[
+  {
+    "timestamp": "2026-09-03T12:30:00+08:00",
+    "source": "SIMULATED",
+    "station_id": "demo",
+    "wbgt_c": 31.6,
+    "heat_band": "31_to_under_32",
+    "air_temperature_c": 32.8,
+    "is_simulated_forecast": true
+  },
+  {
+    "timestamp": "2026-09-03T12:45:00+08:00",
+    "source": "SIMULATED",
+    "station_id": "demo",
+    "wbgt_c": 31.9,
+    "heat_band": "31_to_under_32",
+    "air_temperature_c": 33.0,
+    "is_simulated_forecast": true
+  },
+  {
+    "timestamp": "2026-09-03T13:00:00+08:00",
+    "source": "SIMULATED",
+    "station_id": "demo",
+    "wbgt_c": 32.4,
+    "heat_band": "32_to_under_33",
+    "air_temperature_c": 33.1,
+    "is_simulated_forecast": true
+  },
+  {
+    "timestamp": "2026-09-03T13:15:00+08:00",
+    "source": "SIMULATED",
+    "station_id": "demo",
+    "wbgt_c": 33.1,
+    "heat_band": "33_and_above",
+    "air_temperature_c": 33.5,
+    "is_simulated_forecast": true
+  },
+  {
+    "timestamp": "2026-09-03T16:00:00+08:00",
+    "source": "SIMULATED",
+    "station_id": "demo",
+    "wbgt_c": 31.4,
+    "heat_band": "31_to_under_32",
+    "air_temperature_c": 31.8,
+    "is_simulated_forecast": true
+  }
+]
