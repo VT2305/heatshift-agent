@@ -15,7 +15,6 @@ dependencies = [
 aws = [
   "strands-agents>=1.0.0",
   "bedrock-agentcore",
-  "strands-agents",
   "boto3",
   "aws-opentelemetry-distro",
 ]
